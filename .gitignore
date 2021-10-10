@@ -48,8 +48,11 @@ ExportedObj/
 *.pdb.meta
 *.mdb.meta
 
-# Textures
-*.png
+# Assets from assetstore
+/[Aa]ssets/Blink
+/[Aa]ssets/RunemarkStudio
+/[Aa]ssets/Octave3D World Builder
+/[Aa]ssets/RPG_Fentasy_(Pack)
 
 # Unity3D generated file on crash reports
 sysinfo.txt
