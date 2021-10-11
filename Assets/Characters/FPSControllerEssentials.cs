@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using BLINK.Controller;
 using BLINK.RPGBuilder.Character;
 using BLINK.RPGBuilder.LogicMono;
 using BLINK.RPGBuilder.Managers;
@@ -37,10 +38,8 @@ public class FPSControllerEssentials : RPGBCharacterControllerEssentials
     public override IEnumerator InitControllers()
     {
         yield return new WaitForFixedUpdate();
-        //controller._playerCamera.Rig.transform.localRotation = transform.localRotation;
-        //controller._playerCamera.InitCameraPosition(new Vector2(15, transform.eulerAngles.y));
-        //controller.SetControlRotation(new Vector2(15, transform.eulerAngles.y));
         SetCameraMouseLook(true);
+        controllerIsReady = true;
     }
 
     /*
@@ -48,8 +47,8 @@ public class FPSControllerEssentials : RPGBCharacterControllerEssentials
     */
     public override void InitDeath()
     {
-        //anim.Rebind();
-        //anim.SetBool("Dead", true);
+        anim.Rebind();
+        anim.SetBool("Dead", true);
         SetCameraAiming(false);
         SetCameraMouseLook(false);
         playerIsDead = true;
@@ -58,9 +57,8 @@ public class FPSControllerEssentials : RPGBCharacterControllerEssentials
     public override void CancelDeath()
     {
         playerIsDead = false;
-        //anim.Rebind();
-        //anim.SetBool("Dead", false);
-        SetCameraAiming(true);
+        anim.Rebind();
+        anim.SetBool("Dead", false);
         SetCameraMouseLook(true);
     }
 
@@ -79,10 +77,11 @@ public class FPSControllerEssentials : RPGBCharacterControllerEssentials
     {
         isLeaping = false;
     }
-        
-    /* -- FLYING FUNCTIONS --
-    
-        
+
+    /*
+    -- FLYING FUNCTIONS --
+    */
+
     public override void InitFlying()
     {
         isFlying = true;
@@ -96,7 +95,6 @@ public class FPSControllerEssentials : RPGBCharacterControllerEssentials
         controller.isFlying = false;
         anim.SetBool("isFlying", false);
     }
-    */
 
     /*
     -- STAND TIME FUNCTIONS --
@@ -105,7 +103,6 @@ public class FPSControllerEssentials : RPGBCharacterControllerEssentials
     public override void InitStandTime(float max)
     {
         standTimeActive = true;
-        controller.SetStunned(true);
         currentStandTimeDur = 0;
         maxStandTimeDur = max;
 
@@ -120,13 +117,12 @@ public class FPSControllerEssentials : RPGBCharacterControllerEssentials
     protected override void ResetStandTime()
     {
         standTimeActive = false;
-        controller.SetStunned(false);
         currentStandTimeDur = 0;
         maxStandTimeDur = 0;
     }
 
     /* KNOCKBACK FUNCTIONS
-    
+     */
     public bool knockbackActive;
     private Vector3 knockBackTarget;
     private float cachedKnockbackDistance;
@@ -158,10 +154,9 @@ public class FPSControllerEssentials : RPGBCharacterControllerEssentials
         cachedKnockbackDistance = 0;
         knockBackTarget = Vector3.zero;
     }
-    */
-        
+
     /* MOTION FUNCTIONS
-    
+     */
     private float curMotionSpeed;
     public override void InitMotion(float motionDistance, Vector3 motionDirection, float motionSpeed, bool immune)
     {
@@ -183,16 +178,16 @@ public class FPSControllerEssentials : RPGBCharacterControllerEssentials
         {
             lastPosition = transform.position;
             controller.getCharController().Move(motionTarget * (Time.deltaTime * curMotionSpeed));
-                
+
             if (IsInMotionWithoutProgress(0.05f))
             {
                 ResetMotion();
                 return;
             }
-                
+
             if (!(distance < cachedMotionDistance * 0.75f)) return;
             curMotionSpeed = Mathf.Lerp(curMotionSpeed, 0, Time.deltaTime * 5f);
-            if(curMotionSpeed < (cachedMotionSpeed * 0.2f))
+            if (curMotionSpeed < (cachedMotionSpeed * 0.2f))
             {
                 curMotionSpeed = cachedMotionSpeed * 0.2f;
             }
@@ -216,30 +211,6 @@ public class FPSControllerEssentials : RPGBCharacterControllerEssentials
         cachedMotionDistance = 0;
         motionTarget = Vector3.zero;
     }
-    */
-        
-    /* CAMERA AIMING
-        * 
-        */
-
-    public bool isAimingTransition;
-    protected override void SetCameraAiming(bool isAiming)
-    {
-        if (CombatManager.playerCombatNode.appearanceREF.isShapeshifted &&
-            !RPGBuilderUtilities.canActiveShapeshiftCameraAim(CombatManager.playerCombatNode)) return;
-        //controller.CameraSettings.isAiming = isAiming;
-        //controller.RotationSettings.UseControlRotation = isAiming;
-        //controller.RotationSettings.OrientRotationToMovement = !isAiming;
-        isAimingTransition = true;
-            
-        anim.SetBool("isAiming", isAiming);
-            
-        if (isAiming)
-            CrosshairDisplayManager.Instance.ShowCrosshair();
-        else
-            CrosshairDisplayManager.Instance.HideCrosshair();
-    }
-
     /*
     -- CAST SLOWED FUNCTIONS --
     Cast slow is an optional mechanic for abilities. It allows the player to be temporarily slowed while
@@ -265,7 +236,7 @@ public class FPSControllerEssentials : RPGBCharacterControllerEssentials
 
         float newMoveSpeed = RPGBuilderUtilities.getCurrentMoveSpeed(CombatManager.playerCombatNode);
         newMoveSpeed *= curSpeedPercentage;
-        newMoveSpeed = (float) Math.Round(newMoveSpeed, 2);
+        newMoveSpeed = (float)Math.Round(newMoveSpeed, 2);
         MovementSpeedChange(newMoveSpeed);
 
         if (currentCastSlowDur >= maxCastSlowDur) ResetCastSlow();
@@ -278,6 +249,10 @@ public class FPSControllerEssentials : RPGBCharacterControllerEssentials
         speedPercentageTarget = 1;
         currentCastSlowDur = 0;
         maxCastSlowDur = 0;
+        if (RPGBuilderEssentials.Instance.generalSettings.useOldController)
+        {
+            builtInController.anim.SetFloat(moveSpeedModifier, curSpeedPercentage);
+        }
 
         MovementSpeedChange(RPGBuilderUtilities.getCurrentMoveSpeed(CombatManager.playerCombatNode));
     }
@@ -292,79 +267,18 @@ public class FPSControllerEssentials : RPGBCharacterControllerEssentials
 
         HandleCombatStates();
 
-        /*if (knockbackActive)
+        if (knockbackActive)
             HandleKnockback();
-            
+
         if (motionActive)
             HandleMotion();
-        */
+
         if (isTeleporting)
             HandleTeleporting();
-            
-        if(controller.getSprinting())
+
+        if (controller.isSprinting)
             HandleSprint();
-
-
-        /*if (isResetingSprintCamFOV)
-            HandleSprintCamFOVReset();
-        */
     }
-
-    /*private void HandleSprintCamFOVReset()
-    {
-        controller._playerCamera.Camera.fieldOfView = Mathf.Lerp(controller._playerCamera.Camera.fieldOfView,
-            controller.CameraSettings.NormalFOV, Time.deltaTime * controller.CameraSettings.FOVLerpSpeed);
-
-        if (Mathf.Abs(controller._playerCamera.Camera.fieldOfView - controller.CameraSettings.NormalFOV) < 0.25f)
-        {
-            controller._playerCamera.Camera.fieldOfView = controller.CameraSettings.NormalFOV;
-            isResetingSprintCamFOV = false;
-        }
-    }*/
-
-    /* SetAiming toggle
-    private void Update()
-    {
-        if (Input.GetKeyDown(RPGBuilderUtilities.GetCurrentKeyByActionKeyName("TOGGLE_CAMERA_AIM_MODE")))
-        {
-            SetCameraAiming(!controller.CameraSettings.isAiming);
-        }
-
-        if (isAimingTransition)
-        {
-            HandleAimingTransition();
-        }
-    }
-
-    private void HandleAimingTransition()
-    {
-        if (controller.CameraSettings.isAiming)
-        {
-            if (controller._playerCamera.Pivot.transform.localPosition != controller.CameraSettings.aimingPivot)
-            {
-                controller._playerCamera.Pivot.transform.localPosition = Vector3.Lerp(
-                    controller._playerCamera.Pivot.transform.localPosition, controller.CameraSettings.aimingPivot
-                    , controller.CameraSettings.aimInSpeed * Time.deltaTime);
-            }
-            else
-            {
-                isAimingTransition = false;
-            }
-        }
-        else
-        {
-            if (controller._playerCamera.Pivot.transform.localPosition != controller.CameraSettings.normalPivot)
-            {
-                controller._playerCamera.Pivot.transform.localPosition = Vector3.Lerp(
-                    controller._playerCamera.Pivot.transform.localPosition, controller.CameraSettings.normalPivot
-                    , controller.CameraSettings.aimOutSpeed * Time.deltaTime);
-            }
-            else
-            {
-                isAimingTransition = false;
-            }
-        }
-    }*/
 
     protected override void HandleTeleporting()
     {
@@ -401,24 +315,24 @@ public class FPSControllerEssentials : RPGBCharacterControllerEssentials
     public override bool HasMovementRestrictions()
     {
         return CombatManager.playerCombatNode.dead ||
-                !canMove ||
-                isTeleporting ||
-                standTimeActive ||
-                //knockbackActive ||
-                //motionActive ||
-                isLeaping ||
-                CombatManager.playerCombatNode.isStunned() ||
-                CombatManager.playerCombatNode.isSleeping();
+               !canMove ||
+               isTeleporting ||
+               standTimeActive ||
+               knockbackActive ||
+               motionActive ||
+               isLeaping ||
+               CombatManager.playerCombatNode.isStunned() ||
+               CombatManager.playerCombatNode.isSleeping();
     }
 
     public override bool HasRotationRestrictions()
     {
         return CombatManager.playerCombatNode.dead ||
-                isLeaping ||
-                //knockbackActive ||
-                //motionActive ||
-                CombatManager.playerCombatNode.isStunned() ||
-                CombatManager.playerCombatNode.isSleeping();
+               isLeaping ||
+               knockbackActive ||
+               motionActive ||
+               CombatManager.playerCombatNode.isStunned() ||
+               CombatManager.playerCombatNode.isSleeping();
     }
 
     /*
@@ -435,7 +349,7 @@ public class FPSControllerEssentials : RPGBCharacterControllerEssentials
     protected override void SetCameraMouseLook(bool state)
     {
         if (playerIsDead) return;
-        controller.SetCameraCanRotate(state);
+        controller.cameraCanRotate = state;
         Cursor.visible = !state;
         Cursor.lockState = state ? CursorLockMode.Locked : CursorLockMode.None;
     }
@@ -443,47 +357,39 @@ public class FPSControllerEssentials : RPGBCharacterControllerEssentials
     public override void ToggleCameraMouseLook()
     {
         if (playerIsDead) return;
-        var state = !controller.getCameraCanRotate();
+        var state = !controller.cameraCanRotate;
         SetCameraMouseLook(state);
     }
 
     /*
-        *
-        * MOVEMENT
-        */
+     *
+     * MOVEMENT
+     */
 
     public override void StartSprint()
     {
-        controller.setSprinting(true);
-            
+        controller.isSprinting = true;
+
     }
     public override void EndSprint()
     {
-        controller.setSprinting(false);
-        //isResetingSprintCamFOV = true;
+        controller.isSprinting = false;
     }
 
 
     public override void HandleSprint()
     {
-        /*if (controller.CameraSettings.NormalFOV != controller.CameraSettings.SprintFOV)
-        {
-            controller._playerCamera.Camera.fieldOfView = Mathf.Lerp(controller._playerCamera.Camera.fieldOfView,
-                controller.CameraSettings.SprintFOV, Time.deltaTime * controller.CameraSettings.FOVLerpSpeed);
-        }*/
-            
-            
-        if(RPGBuilderEssentials.Instance.sprintStatDrainReference == null) return;
+        if (RPGBuilderEssentials.Instance.sprintStatDrainReference == null) return;
 
         if (!(Time.time >= nextSprintStatDrain)) return;
         nextSprintStatDrain = Time.time + RPGBuilderEssentials.Instance.combatSettings.sprintStatDrainInterval;
-        CombatManager.playerCombatNode.AlterVitalityStat(RPGBuilderEssentials.Instance.combatSettings.sprintStatDrainAmount, 
+        CombatManager.playerCombatNode.AlterVitalityStat(RPGBuilderEssentials.Instance.combatSettings.sprintStatDrainAmount,
             RPGBuilderEssentials.Instance.combatSettings.sprintStatDrainID);
     }
 
     public override bool isSprinting()
     {
-        return controller.getSprinting();
+        return controller.isSprinting;
     }
 
     /*
@@ -506,7 +412,8 @@ public class FPSControllerEssentials : RPGBCharacterControllerEssentials
 
     public override bool IsThirdPersonShooter()
     {
-        return false;
+        //is aming => FPS Controller is always aiming
+        return true;
     }
 
     public override RPGGeneralDATA.ControllerTypes GETControllerType()
@@ -517,21 +424,17 @@ public class FPSControllerEssentials : RPGBCharacterControllerEssentials
     public override void MainMenuInit()
     {
         Destroy(GetComponent<FPSController>());
-        Destroy(GetComponent<Animator>());
-        GetComponentInChildren<Camera>().enabled = false;
-        Destroy(GetComponentInChildren<AudioListener>());
-        //Destroy(GetComponent<CharacterAnimator>());
-        //Destroy(GetComponent<RPGBThirdPersonCharacterControllerEssentials>());
+        Destroy(GetComponent<CharacterAnimator>());
+        Destroy(GetComponent<FPSControllerEssentials>());
         Destroy(GetComponent<RPGBCharacterWorldInteraction>());
+        Destroy(GetComponentInChildren<Camera>().gameObject);
         Destroy(charController);
     }
-        
-    /*
+
     public override void AbilityInitActions(RPGAbility.RPGAbilityRankData rankREF)
     {
     }
     public override void AbilityEndCastActions(RPGAbility.RPGAbilityRankData rankREF)
     {
     }
-    */
 }
