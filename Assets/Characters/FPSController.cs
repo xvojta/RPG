@@ -89,7 +89,7 @@ public class FPSController : MonoBehaviour
 		return _characterController;
 	}
 
-	private CharacterAnimator _characterAnimator;
+	private FPSAnimator _characterAnimator;
 
 	private float _targetHorizontalSpeed; // In meters/second
 	private float _horizontalSpeed; // In meters/second
@@ -123,7 +123,7 @@ public class FPSController : MonoBehaviour
 		Controller.FPSController = this;
 
 		_characterController = GetComponent<CharacterController>();
-		_characterAnimator = GetComponent<CharacterAnimator>();
+		_characterAnimator = GetComponent<FPSAnimator>();
 	}
 
 	private void Update()
