@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b98f224b0e58a664a8b9ece471023735, type: 3}
+  m_Name: Corridor1
+  m_EditorClassIdentifier: 
+  CorridorEnterPrefab: {fileID: 4603296814786442785, guid: 40c746ce4541e8d4797824ebae78f512, type: 3}
+  CorridorMiddlePrefab: {fileID: 368300731853218828, guid: b52d00b02d541224a855b438456cf745, type: 3}
+  CorridorExitPrefab: {fileID: 2962320124177174077, guid: 97f3b50575b5f614aa3d85484664869a, type: 3}
+  SpawnProbability: 1
