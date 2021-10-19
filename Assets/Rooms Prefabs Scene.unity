@@ -14187,47 +14187,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4603296814786442785, guid: 40c746ce4541e8d4797824ebae78f512, type: 3}
   m_PrefabInstance: {fileID: 4603296814608499513}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &392905658
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec0b4dd729a12d046982652f834580a2, type: 3}
-  m_Name: Rooms Prefabs Scene_LMA2
-  m_EditorClassIdentifier: 
-  resolution: 256
-  bitmask: 1
-  id: 2
-  sortingID: 2
-  isImplicit: 1
-  area: 0
-  totalVertexCount: 0
-  vertexCounter: 0
-  sceneLodLevel: -1
-  sceneName: 
-  containsTerrains: 0
-  probes: 0
-  mode: 1
-  renderMode: 1000
-  renderDirMode: 1000
-  atlasPacker: 1000
-  computeSSS: 0
-  sssSamples: 16
-  sssDensity: 10
-  sssColor: {r: 1, g: 1, b: 1, a: 1}
-  sssScale: 1
-  fakeShadowBias: 0
-  transparentSelfShadow: 0
-  flipNormal: 0
-  parentName: 
-  overridePath: 
-  fixPos3D: 0
-  voxelSize: {x: 1, y: 1, z: 1}
-  passedFilter: 0
 --- !u!114 &394158541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30332,71 +30291,71 @@ MonoBehaviour:
   lightUIDs: 
   lights: []
   implicitGroups:
-  - {fileID: 2097158550}
-  - {fileID: 2097158550}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 392905658}
-  - {fileID: 392905658}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 2097158550}
-  - {fileID: 922969781}
-  - {fileID: 2097158550}
-  - {fileID: 392905658}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 392905658}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 392905658}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 392905658}
-  - {fileID: 922969781}
-  - {fileID: 2097158550}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
-  - {fileID: 392905658}
-  - {fileID: 2097158550}
-  - {fileID: 922969781}
-  - {fileID: 922969781}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   implicitGroupedObjects:
   - {fileID: 6422668}
   - {fileID: 86458307}
@@ -30470,7 +30429,7 @@ MonoBehaviour:
     m_Extent: {x: 5, y: 0.9765834, z: 2.5}
   - m_Center: {x: -35.870174, y: 0.86551434, z: 16.026426}
     m_Extent: {x: 3.3798256, y: 0.86551434, z: 3.5360794}
-  hasEmissive: 010101
+  hasEmissive: "\x01\x01\x01"
   uvBuffOffsets: 
   uvBuffLengths: 
   uvSrcBuff: []
@@ -30482,10 +30441,10 @@ MonoBehaviour:
   lmGroupMinLOD: 
   lmGroupLODMatrix: 
   serverGetFileList: []
-  lightmapHasColor: 010101
-  lightmapHasMask: 000000
-  lightmapHasDir: 000000
-  lightmapHasRNM: 000000
+  lightmapHasColor: "\x01\x01\x01"
+  lightmapHasMask: 
+  lightmapHasDir: 
+  lightmapHasRNM: 
   modifiedAssetPathList: []
   modifiedAssets: []
   maps:
@@ -36170,47 +36129,6 @@ MonoBehaviour:
     _visibilityToggleIndent: 0
     _indentContent: 0
     _surroundWithBox: 1
---- !u!114 &922969781
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec0b4dd729a12d046982652f834580a2, type: 3}
-  m_Name: Rooms Prefabs Scene_LM0
-  m_EditorClassIdentifier: 
-  resolution: 512
-  bitmask: 1
-  id: 0
-  sortingID: 0
-  isImplicit: 1
-  area: 764.0516
-  totalVertexCount: 0
-  vertexCounter: 0
-  sceneLodLevel: -1
-  sceneName: 
-  containsTerrains: 0
-  probes: 0
-  mode: 1
-  renderMode: 1000
-  renderDirMode: 1000
-  atlasPacker: 1000
-  computeSSS: 0
-  sssSamples: 16
-  sssDensity: 10
-  sssColor: {r: 1, g: 1, b: 1, a: 1}
-  sssScale: 1
-  fakeShadowBias: 0
-  transparentSelfShadow: 0
-  flipNormal: 0
-  parentName: 
-  overridePath: 
-  fixPos3D: 0
-  voxelSize: {x: 1, y: 1, z: 1}
-  passedFilter: 0
 --- !u!114 &924733768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70718,7 +70636,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d3e0fa2d28dccc94fb12cdeb816dc6cc, type: 2}
   corridors:
   - {fileID: 11400000, guid: 4a1a6db42ef8bd144ad2474dc9a34b75, type: 2}
-  NumberOfRooms: 10
+  NumberOfRooms: 5
   DungeonParentObject: {fileID: 1256516621}
 --- !u!114 &1806554667
 MonoBehaviour:
@@ -82052,47 +81970,6 @@ MonoBehaviour:
     _visibilityToggleIndent: 0
     _indentContent: 0
     _surroundWithBox: 0
---- !u!114 &2097158550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec0b4dd729a12d046982652f834580a2, type: 3}
-  m_Name: Rooms Prefabs Scene_LMA1
-  m_EditorClassIdentifier: 
-  resolution: 256
-  bitmask: 1
-  id: 1
-  sortingID: 1
-  isImplicit: 1
-  area: 0
-  totalVertexCount: 0
-  vertexCounter: 0
-  sceneLodLevel: -1
-  sceneName: 
-  containsTerrains: 0
-  probes: 0
-  mode: 1
-  renderMode: 1000
-  renderDirMode: 1000
-  atlasPacker: 1000
-  computeSSS: 0
-  sssSamples: 16
-  sssDensity: 10
-  sssColor: {r: 1, g: 1, b: 1, a: 1}
-  sssScale: 1
-  fakeShadowBias: 0
-  transparentSelfShadow: 0
-  flipNormal: 0
-  parentName: 
-  overridePath: 
-  fixPos3D: 0
-  voxelSize: {x: 1, y: 1, z: 1}
-  passedFilter: 0
 --- !u!114 &2097831107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83917,6 +83794,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CorridorMiddle
       objectReference: {fileID: 0}
+    - target: {fileID: 368300731853218828, guid: b52d00b02d541224a855b438456cf745, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 368300731853218829, guid: b52d00b02d541224a855b438456cf745, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -83978,6 +83859,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RoomPortal
       objectReference: {fileID: 0}
+    - target: {fileID: 3627201184023284274, guid: d62dddc05b7a60c4b935c74504facda5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3627201184023284285, guid: d62dddc05b7a60c4b935c74504facda5, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -84021,22 +83906,6 @@ PrefabInstance:
     - target: {fileID: 3627201184023284285, guid: d62dddc05b7a60c4b935c74504facda5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3759791453463875875, guid: d62dddc05b7a60c4b935c74504facda5, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 3759791453463875875, guid: d62dddc05b7a60c4b935c74504facda5, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3759791453463875875, guid: d62dddc05b7a60c4b935c74504facda5, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3759791453463875875, guid: d62dddc05b7a60c4b935c74504facda5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d62dddc05b7a60c4b935c74504facda5, type: 3}
@@ -84099,6 +83968,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CorridorEdge
       objectReference: {fileID: 0}
+    - target: {fileID: 4603296814786442785, guid: 40c746ce4541e8d4797824ebae78f512, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 40c746ce4541e8d4797824ebae78f512, type: 3}
 --- !u!1001 &5772099978037604124
@@ -84111,6 +83984,10 @@ PrefabInstance:
     - target: {fileID: 5772099979537934664, guid: c1320d4c47edfdc45b0e613f74eeebe1, type: 3}
       propertyPath: m_Name
       value: Room3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5772099979537934664, guid: c1320d4c47edfdc45b0e613f74eeebe1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5772099979537934665, guid: c1320d4c47edfdc45b0e613f74eeebe1, type: 3}
       propertyPath: m_RootOrder
@@ -84213,6 +84090,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CorridorExit
       objectReference: {fileID: 0}
+    - target: {fileID: 2962320124177174077, guid: 97f3b50575b5f614aa3d85484664869a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97f3b50575b5f614aa3d85484664869a, type: 3}
 --- !u!1001 &6019107351390669580
@@ -84228,7 +84109,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6019107350742325900, guid: 8a0fe8968786c4546a5542e620f65961, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6019107350742325901, guid: 8a0fe8968786c4546a5542e620f65961, type: 3}
       propertyPath: m_RootOrder
@@ -84335,6 +84216,10 @@ PrefabInstance:
     - target: {fileID: 3410249867591329265, guid: 9b8fb97d3dc7bda4399c4628b2a21898, type: 3}
       propertyPath: m_Name
       value: Room2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3410249867591329265, guid: 9b8fb97d3dc7bda4399c4628b2a21898, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9b8fb97d3dc7bda4399c4628b2a21898, type: 3}

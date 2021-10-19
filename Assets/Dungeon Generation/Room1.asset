@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RoomType: 0
   RoomPrefab: {fileID: 6019107350742325900, guid: 8a0fe8968786c4546a5542e620f65961, type: 3}
-  SpawnProbability: 0.5
+  SpawnProbability: 0.091
   NumberOfEntrances: 2
-  EntrancesPos: []

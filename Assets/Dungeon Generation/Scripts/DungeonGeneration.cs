@@ -50,7 +50,7 @@ public class DungeonGeneration : MonoBehaviour
         Debug.Log(SpawnDungeon(1, 1, RoomType.Portal, lastPosition, lastEntryPoint, true));
     }
 
-    void SpawnCorridor(Corridor corridor, int lenght, EntryPoint entryPoint)
+    GameObject SpawnCorridor(Corridor corridor, int lenght, EntryPoint entryPoint)
     {
         Vector3 nextSpawnPos = new Vector3();
 
@@ -67,10 +67,11 @@ public class DungeonGeneration : MonoBehaviour
 
         for (int i = 0; i < lenght; i++)
         {
-            nextSpawnPos = spawnCorridorPiece(corridor.CorridorMiddlePrefab, nextSpawnPos);
+            nextSpawnPos = spawnCorridorPiece(corridor.CorridorMiddlePrefab, nextSpawnPos, newCorridor.transform);
         }
 
-        nextRoomSpawnPos = spawnCorridorPiece(corridor.CorridorExitPrefab, nextSpawnPos);
+        nextRoomSpawnPos = spawnCorridorPiece(corridor.CorridorExitPrefab, nextSpawnPos, newCorridor.transform);
+        return newCorridor;
     }
 
     GameObject SpawnRoom(Room room)
@@ -83,6 +84,7 @@ public class DungeonGeneration : MonoBehaviour
         EntryPoint mainEntryPoint = getMainEntryPoint(allEntryPoints);
         mainEntryPoint.transform.position = nextRoomSpawnPos;
         mainEntryPoint.transform.Rotate(0, 180 - rotation, 0);
+        mainEntryPoint.name += " " + nextRoomSpawnPos;
 
         return spawnedRoom;
     }
@@ -119,60 +121,87 @@ public class DungeonGeneration : MonoBehaviour
             allProbabilities -= rooms[i].SpawnProbability;
         }
 
+        EntryPoint[] entryPoints = new EntryPoint[0];
+
         for (int i = 0; i < rooms.Length; i++)
         {
             var newIndex = (i + indexOffset) % rooms.Length;
             if (rooms[newIndex].RoomType == type && rooms[newIndex].NumberOfEntrances <= maxNumberOfEntrances
                 && (rooms[newIndex].NumberOfEntrances > 1 || canSpawn1Entrance))
             {
-                foreach(EntryPoint point in rooms[newIndex].RoomPrefab.GetComponentsInChildren<EntryPoint>())
+                entryPoints = rooms[newIndex].RoomPrefab.GetComponentsInChildren<EntryPoint>();
+                List<Vector2> newPos = new List<Vector2>();
+                foreach(EntryPoint point in entryPoints)
                 {
                     if (!point.IsMain || type == RoomType.Spawn)
                     {
-                        var newPos = topologyCheck(point, mapPos);
-                        if (newPos.HasValue)
+                        var testPos = topologyCheck(point, mapPos);
+                        if (!testPos.HasValue) goto Fail;
+                        newPos.Add(testPos.Value);
+                    }
+                }
+                GameObject newCorridor = null;
+                GameObject newRoom = null;
+                for (int p = 0; p < entryPoints.Length; p++)
+                {
+                    if (!entryPoints[p].IsMain || type == RoomType.Spawn)
+                    {
+                        var thisNewPos = newPos[p % newPos.Count];
+                        if(newRoom == null)
                         {
-                            lastEntryPoint = point;
-                            lastPosition = newPos.Value;
                             if (type != RoomType.Spawn)
                             {
-                                SpawnCorridor(corridors[0], corridorLenght, entryPoint);
+                                newCorridor = SpawnCorridor(corridors[0], corridorLenght, entryPoint);
                             }
                             else
                             {
                                 nextRoomSpawnPos = entryPoint.transform.position;
                             }
-                            var newRoom = SpawnRoom(rooms[newIndex]);
+                            newRoom = SpawnRoom(rooms[newIndex]);
 
-                            if (numberOfrooms == 1 ||
-                            SpawnDungeon(numberOfrooms - 1, potencialRooms + rooms[newIndex].NumberOfEntrances - 2, type, 
-                            newPos.Value, point, potencialRooms > 1,
-                            corridorLenght))
-                            {
-                                return true;
-                            }
+                            lastEntryPoint = newRoom.GetComponentsInChildren<EntryPoint>()[p];
+                            lastPosition = thisNewPos;
+                        }
+                        else if(p > 1)
+                        {
+                            lastEntryPoint = newRoom.GetComponentsInChildren<EntryPoint>()[p];
+                            lastPosition = thisNewPos;
+                        }
 
-                            //Destroy(newRoom);
-                            map[(int)newPos.Value.x][(int)newPos.Value.y] = false;
+
+                        if (numberOfrooms == 1 ||
+                        SpawnDungeon(numberOfrooms - 1, potencialRooms + rooms[newIndex].NumberOfEntrances - 2, type,
+                        thisNewPos, lastEntryPoint, potencialRooms > 1 || numberOfrooms-1 < 2, corridorLenght))
+                        {
+                            if(p >= entryPoints.Length - 1)return true;
+                        }
+                        else
+                        {
+                            if (newRoom != null) Destroy(newRoom);
+                            if (newCorridor != null) Destroy(newCorridor);
+                            goto Fail;
                         }
                     }
                     else if(rooms[newIndex].NumberOfEntrances < 2)
                     {
-                        if (type != RoomType.Spawn) SpawnCorridor(corridors[0], corridorLenght, point);
+                        if (type != RoomType.Spawn) SpawnCorridor(corridors[0], corridorLenght, entryPoint);
                         SpawnRoom(rooms[newIndex]);
                         return true;
                     }
                 }
+            Fail:
+                foreach (EntryPoint point in entryPoints)
+                {
+                    if (!point.IsMain) setMap(point, mapPos, false);
+                }
             }
         }
-            //Debug.LogError("Missing room with: " + maxNumberOfEntrances + ". Or topology problem");
-            return false;
+        //Debug.LogError("Missing room with: " + maxNumberOfEntrances + ". Or topology problem");
+        return false;
     }
 
     Vector2? topologyCheck(EntryPoint point, Vector2 mapPosition)
     {
-        List<Vector2> potencialRooms = new List<Vector2>();
-
         var direction = point.RotationOffset + rotation;
         //if (entryPointStack.Count > 0) direction += entryPointStack[0].RotationOffset;
         Vector2 move = Vector2.right.Rotate(direction);
@@ -192,9 +221,21 @@ public class DungeonGeneration : MonoBehaviour
         return null;
     }
 
-    Vector3 spawnCorridorPiece(GameObject piece, Vector3 spawnPos)
+    void setMap(EntryPoint point, Vector2 mapPosition, bool value)
     {
-        var newCorridor = Instantiate(piece, DungeonParentObject.transform, false);
+        var direction = point.RotationOffset + rotation;
+        //if (entryPointStack.Count > 0) direction += entryPointStack[0].RotationOffset;
+        Vector2 move = Vector2.right.Rotate(direction);
+        for (int i = 1; i < 3; i++)
+        {
+            var newPos = mapPosition + move * i;
+            map[(int)newPos.x][(int)newPos.y] = value;
+        }
+    }
+
+    Vector3 spawnCorridorPiece(GameObject piece, Vector3 spawnPos, Transform parent)
+    {
+        var newCorridor = Instantiate(piece, parent, false);
         var allEntryPoints = newCorridor.GetComponentsInChildren<EntryPoint>();
         var mainEntryPoint = getMainEntryPoint(allEntryPoints);
         mainEntryPoint.transform.position = spawnPos;
