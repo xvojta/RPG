@@ -1,5 +1,37 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+
+public class RoomReturn
+{
+    private bool valid = false;
+
+    private List<GameObject> spawnedObjects;
+    private List<Vector2> mapPositions;
+
+    public RoomReturn(bool Valid, List<GameObject> SpawnedObjects, List<Vector2> MapPositions)
+    {
+        valid = Valid;
+        spawnedObjects = SpawnedObjects;
+        mapPositions = MapPositions;
+    }
+
+    public bool Valid
+    {
+        get { return valid; }
+        set { valid = value; }
+    }
+    public List<GameObject> SpawnedObjects
+    {
+        get { return spawnedObjects; }
+        set { spawnedObjects = value; }
+    }
+    public List<Vector2> MapPositions
+    {
+        get { return mapPositions; }
+        set { mapPositions = value; }
+    }
+}
 
 public class DungeonGeneration : MonoBehaviour
 {
@@ -7,11 +39,10 @@ public class DungeonGeneration : MonoBehaviour
     public Corridor[] corridors;
     public int NumberOfRooms;
     public GameObject DungeonParentObject;
+    public MinimapGeneration minimapGeneration;
 
     Vector3 nextRoomSpawnPos;
     EntryPoint lastEntryPoint;
-    Vector2 lastPosition;
-    int rotation = 0;
     bool[][] map;
     Vector2 startPos;
 
@@ -19,17 +50,11 @@ public class DungeonGeneration : MonoBehaviour
     {
         foreach (Transform child in DungeonParentObject.transform) Destroy(child.gameObject);
         GenerateDungeon(NumberOfRooms, 3, 10);
-    }
-
-    private void OnDestroy()
-    {
-        Debug.LogError("Destroy");
+        minimapGeneration.Generate(map);
     }
 
     void Init(int numberOfRooms, int minCorridor, int maxCorridor)
     {
-        rotation = 0;
-
         startPos = new Vector2(numberOfRooms * 2 - 1, numberOfRooms * 2 - 1);
         int mapSize = (int)startPos.x*2;
         map = new bool[mapSize][];
@@ -41,16 +66,31 @@ public class DungeonGeneration : MonoBehaviour
     {
         Init(numberOfRooms, minCorridor, maxCorridor);
 
+        #region spawnSpawn
         nextRoomSpawnPos = DungeonParentObject.transform.position;
 
-        Debug.Log(SpawnDungeon(1, 0, RoomType.Spawn, startPos, DungeonParentObject.GetComponent<EntryPoint>(), true));
+        List<Room> spawnRooms = new List<Room>();
+        foreach (Room room in rooms) if (room.RoomType == RoomType.Spawn) spawnRooms.Add(room);
+        var spawnRoom = SpawnRoom(randomRoom(spawnRooms), 0);
+        var mainEntry = getMainEntryPoint(spawnRoom.GetComponentsInChildren<EntryPoint>());
+        mainEntry.transform.position = DungeonParentObject.transform.position;
+        #endregion
 
-        Debug.Log(SpawnDungeon(numberOfRooms - 1, 1, RoomType.Loot, lastPosition, lastEntryPoint));
+        var dungeon = SpawnDungeon(numberOfRooms - 1, RoomType.Loot, startPos, 0, DungeonParentObject.GetComponent<EntryPoint>());
 
-        Debug.Log(SpawnDungeon(1, 1, RoomType.Portal, lastPosition, lastEntryPoint, true));
+        #region spawnPortal
+        List<Room> portalRooms = new List<Room>();
+        foreach (Room room in rooms) if (room.RoomType == RoomType.Portal) portalRooms.Add(room);
+        var portalRoom = SpawnRoom(randomRoom(portalRooms), 0);
+        var lastRoom = dungeon.SpawnedObjects[dungeon.SpawnedObjects.Count - 1];
+        mainEntry = getMainEntryPoint(portalRoom.GetComponentsInChildren<EntryPoint>());
+        mainEntry.transform.position = lastRoom.GetComponentInChildren<EntryPoint>().transform.position;
+        mainEntry.transform.rotation = lastRoom.GetComponentInChildren<EntryPoint>().transform.rotation;
+        Destroy(lastRoom);
+        #endregion
     }
 
-    GameObject SpawnCorridor(Corridor corridor, int lenght, EntryPoint entryPoint)
+    GameObject SpawnCorridor(Corridor corridor, int lenght, EntryPoint entryPoint, int rotation)
     {
         Vector3 nextSpawnPos = new Vector3();
 
@@ -59,7 +99,6 @@ public class DungeonGeneration : MonoBehaviour
 
         var mainEntryPoint = getMainEntryPoint(allEntryPoints);
         mainEntryPoint.transform.position = entryPoint.transform.position;
-        rotation = entryPoint.RotationOffset;
         mainEntryPoint.transform.Rotate(0, 180 + rotation, 0);
 
         foreach (EntryPoint point in allEntryPoints) if (!point.IsMain) nextSpawnPos = point.transform.position;
@@ -67,14 +106,14 @@ public class DungeonGeneration : MonoBehaviour
 
         for (int i = 0; i < lenght; i++)
         {
-            nextSpawnPos = spawnCorridorPiece(corridor.CorridorMiddlePrefab, nextSpawnPos, newCorridor.transform);
+            nextSpawnPos = spawnCorridorPiece(corridor.CorridorMiddlePrefab, nextSpawnPos, newCorridor.transform, rotation);
         }
 
-        nextRoomSpawnPos = spawnCorridorPiece(corridor.CorridorExitPrefab, nextSpawnPos, newCorridor.transform);
+        nextRoomSpawnPos = spawnCorridorPiece(corridor.CorridorExitPrefab, nextSpawnPos, newCorridor.transform, rotation);
         return newCorridor;
     }
 
-    GameObject SpawnRoom(Room room)
+    GameObject SpawnRoom(Room room, int rotation)
     {
         Debug.Log(room.ToString());
 
@@ -96,122 +135,89 @@ public class DungeonGeneration : MonoBehaviour
         return null;
     }
 
-    bool SpawnDungeon(int numberOfrooms, int potencialRooms, RoomType type, Vector2 mapPos, EntryPoint entryPoint,
-        bool canSpawn1Entrance = false, int corridorLenght = 5)
+    RoomReturn SpawnDungeon(int roomsToGenerate, RoomType type, Vector2 mapPos, int rotation,
+        EntryPoint entryPoint, int corridorLenght = 5)
     {
-        if (numberOfrooms < 1) return false;
+        List<Room> ValidRooms = rooms.OfType<Room>().ToList();
 
-        var maxNumberOfEntrances = numberOfrooms - potencialRooms + 1;
-        float allProbabilities = 0;
-        foreach (Room room in rooms)
-        {
-            allProbabilities += room.SpawnProbability;
-        }
-
-        float random = Random.Range(0, allProbabilities * 1000) / 1000;
-
-        int indexOffset = 0;
-        for (int i = rooms.Length - 1; i >= 0; i--)
-        {
-            if (random > allProbabilities - rooms[i].SpawnProbability)
-            {
-                indexOffset = i;
-                break;
-            }
-            allProbabilities -= rooms[i].SpawnProbability;
-        }
+        RoomReturn roomReturn = new RoomReturn(false, new List<GameObject>(), new List<Vector2>());
 
         EntryPoint[] entryPoints = new EntryPoint[0];
 
-        for (int i = 0; i < rooms.Length; i++)
+        while (ValidRooms.Count > 0)
         {
-            var newIndex = (i + indexOffset) % rooms.Length;
-            if (rooms[newIndex].RoomType == type && rooms[newIndex].NumberOfEntrances <= maxNumberOfEntrances
-                && (rooms[newIndex].NumberOfEntrances > 1 || canSpawn1Entrance))
+            Room room = randomRoom(ValidRooms);
+            if (room == null) break; //no more valid rooms
+            ValidRooms.Remove(room);
+
+            if (room.RoomType == type && room.NumberOfEntrances <= roomsToGenerate
+                && (room.NumberOfEntrances > 1 || roomsToGenerate == 1))            
             {
-                entryPoints = rooms[newIndex].RoomPrefab.GetComponentsInChildren<EntryPoint>();
-                List<Vector2> newPos = new List<Vector2>();
-                foreach(EntryPoint point in entryPoints)
-                {
-                    if (!point.IsMain || type == RoomType.Spawn)
-                    {
-                        var testPos = topologyCheck(point, mapPos);
-                        if (!testPos.HasValue) goto Fail;
-                        newPos.Add(testPos.Value);
-                    }
-                }
-                GameObject newCorridor = null;
-                GameObject newRoom = null;
+                //all entry points topology check, room does not directly violate rooms topology and save its topology position
+                var newPos = topologyCheck(entryPoint, mapPos, rotation);
+                if (newPos == null) goto Fail;
+                roomReturn.MapPositions.AddRange(newPos);
+
+                roomReturn.SpawnedObjects.Add(SpawnCorridor(corridors[0], corridorLenght, entryPoint, rotation));
+                roomReturn.SpawnedObjects.Add(SpawnRoom(room, rotation));
+
+                entryPoints = roomReturn.SpawnedObjects[roomReturn.SpawnedObjects.Count - 1].GetComponentsInChildren<EntryPoint>();
+                var newMapPos = newPos[newPos.Count - 1];
+
                 for (int p = 0; p < entryPoints.Length; p++)
                 {
-                    if (!entryPoints[p].IsMain || type == RoomType.Spawn)
+                    if (!entryPoints[p].IsMain)
                     {
-                        var thisNewPos = newPos[p % newPos.Count];
-                        if(newRoom == null)
-                        {
-                            if (type != RoomType.Spawn)
-                            {
-                                newCorridor = SpawnCorridor(corridors[0], corridorLenght, entryPoint);
-                            }
-                            else
-                            {
-                                nextRoomSpawnPos = entryPoint.transform.position;
-                            }
-                            newRoom = SpawnRoom(rooms[newIndex]);
+                        lastEntryPoint = entryPoints[p];
 
-                            lastEntryPoint = newRoom.GetComponentsInChildren<EntryPoint>()[p];
-                            lastPosition = thisNewPos;
-                        }
-                        else if(p > 1)
-                        {
-                            lastEntryPoint = newRoom.GetComponentsInChildren<EntryPoint>()[p];
-                            lastPosition = thisNewPos;
-                        }
+                        var maxRooms = roomsToGenerate - 1 - (room.NumberOfEntrances - 2);
+                        int branchRoomsToGenerate = (p < entryPoints.Length-1)? Random.Range(1, maxRooms*2/entryPoints.Length) : maxRooms;
 
+                        var newRoomReturn = SpawnDungeon(branchRoomsToGenerate,
+                        type, newMapPos, rotation + lastEntryPoint.RotationOffset, lastEntryPoint, corridorLenght);
 
-                        if (numberOfrooms == 1 ||
-                        SpawnDungeon(numberOfrooms - 1, potencialRooms + rooms[newIndex].NumberOfEntrances - 2, type,
-                        thisNewPos, lastEntryPoint, potencialRooms > 1 || numberOfrooms-1 < 2, corridorLenght))
+                        roomReturn.MapPositions.AddRange(newRoomReturn.MapPositions);
+                        roomReturn.SpawnedObjects.AddRange(newRoomReturn.SpawnedObjects);
+
+                        if (roomsToGenerate == 1 || newRoomReturn.Valid)
                         {
-                            if(p >= entryPoints.Length - 1)return true;
+                            roomsToGenerate -= newRoomReturn.SpawnedObjects.Count / 2 - 1; //-1 for completed branch
                         }
                         else
-                        {
-                            if (newRoom != null) Destroy(newRoom);
-                            if (newCorridor != null) Destroy(newCorridor);
+                        {                            
                             goto Fail;
                         }
                     }
-                    else if(rooms[newIndex].NumberOfEntrances < 2)
-                    {
-                        if (type != RoomType.Spawn) SpawnCorridor(corridors[0], corridorLenght, entryPoint);
-                        SpawnRoom(rooms[newIndex]);
-                        return true;
-                    }
                 }
+                roomReturn.Valid = true;
+                return roomReturn;
+
             Fail:
-                foreach (EntryPoint point in entryPoints)
+                foreach (GameObject gameObject in roomReturn.SpawnedObjects)
                 {
-                    if (!point.IsMain) setMap(point, mapPos, false);
+                    Destroy(gameObject);
+                }
+                foreach (Vector2 position in roomReturn.MapPositions)
+                {
+                    setMap(position, false);
                 }
             }
         }
-        //Debug.LogError("Missing room with: " + maxNumberOfEntrances + ". Or topology problem");
-        return false;
+        return new RoomReturn(false, new List<GameObject>(), new List<Vector2>());
     }
 
-    Vector2? topologyCheck(EntryPoint point, Vector2 mapPosition)
+    List<Vector2> topologyCheck(EntryPoint point, Vector2 mapPosition, int rotation)
     {
-        var direction = point.RotationOffset + rotation;
-        //if (entryPointStack.Count > 0) direction += entryPointStack[0].RotationOffset;
-        Vector2 move = Vector2.right.Rotate(direction);
+        List<Vector2> value = new List<Vector2>();
+        Vector2 move = Vector2.right.Rotate(rotation);
         for(int i = 1; i < 3; i++)
         {
             var newPos = mapPosition + move*i;
             if (!map[(int)newPos.x][(int)newPos.y])
             {
                 map[(int)newPos.x][(int)newPos.y] = true;
-                if (i == 2) return newPos;
+                value.Add(newPos);
+                if (i == 2) return value;
             }
             else
             {
@@ -221,19 +227,12 @@ public class DungeonGeneration : MonoBehaviour
         return null;
     }
 
-    void setMap(EntryPoint point, Vector2 mapPosition, bool value)
+    void setMap(Vector2 mapPosition, bool value)
     {
-        var direction = point.RotationOffset + rotation;
-        //if (entryPointStack.Count > 0) direction += entryPointStack[0].RotationOffset;
-        Vector2 move = Vector2.right.Rotate(direction);
-        for (int i = 1; i < 3; i++)
-        {
-            var newPos = mapPosition + move * i;
-            map[(int)newPos.x][(int)newPos.y] = value;
-        }
+        map[(int)mapPosition.x][(int)mapPosition.y] = value;
     }
 
-    Vector3 spawnCorridorPiece(GameObject piece, Vector3 spawnPos, Transform parent)
+    Vector3 spawnCorridorPiece(GameObject piece, Vector3 spawnPos, Transform parent, int rotation)
     {
         var newCorridor = Instantiate(piece, parent, false);
         var allEntryPoints = newCorridor.GetComponentsInChildren<EntryPoint>();
@@ -242,5 +241,26 @@ public class DungeonGeneration : MonoBehaviour
         mainEntryPoint.transform.Rotate(0, 180 + rotation, 0);
         foreach (EntryPoint point in allEntryPoints) if (!point.IsMain) return point.transform.position;
         return Vector3.zero;
+    }
+
+    Room randomRoom(List<Room> rooms)
+    {
+        float allProbabilities = 0;
+        foreach (Room room in rooms)
+        {
+            allProbabilities += room.SpawnProbability;
+        }
+
+        float random = Random.Range(0, allProbabilities);
+
+        for (int i = rooms.Count - 1; i >= 0; i--)
+        {
+            if (random > allProbabilities - rooms[i].SpawnProbability)
+            {
+                return rooms[i];
+            }
+            allProbabilities -= rooms[i].SpawnProbability;
+        }
+        return null;
     }
 }
