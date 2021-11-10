@@ -7,7 +7,7 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
-	"last_search.83F126EB" = "p: a:assets "
+	"last_search.83F126EB" = "p: a:assets runemarkStudio .mat"
 	"InspectorPreview.83F126EB" = "1"
 	"currentGroup.83F126EB" = "asset"
 }
@@ -49,7 +49,9 @@ providers = {
 	}
 }
 recentSearches = [
+	"p: a:assets runemarkStudio .mat"
 	"p: a:assets"
+	"p: a:assets "
 	"p: "
 ]
 searchItemFavorites = [
