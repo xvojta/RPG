@@ -9177,7 +9177,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 1.8
-  m_Radius: 0.3
+  m_Radius: 0.4
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -9281,6 +9281,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseSensitivity: 100
+  x: 0
+  y: 0
   camera: {fileID: 7278468911499698792}
   FpsController: {fileID: 3355761304146605077}
   initRotation: {x: 0, y: 0, z: 0, w: 0}

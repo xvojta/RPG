@@ -11,5 +11,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/TestWorld.unity
     guid: 2c27d335408afd14393be95c27186304
+  - enabled: 1
+    path: Assets/Rooms Prefabs Scene.unity
+    guid: 5e49d9a0ebe9ca049bd0e2e98330b126
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 5f80f66a012c3df4c99b488a03d92c65, type: 2}

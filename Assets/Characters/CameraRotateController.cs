@@ -7,6 +7,8 @@ public class CameraRotateController : MonoBehaviour
 {
     public float mouseSensitivity = 100f;
 
+    public float x;
+    public float y;
     public Transform camera;
     public FPSController FpsController;
     public Quaternion initRotation;
@@ -26,8 +28,9 @@ public class CameraRotateController : MonoBehaviour
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 40f);
 
-        camera.rotation = Quaternion.Euler(xRotation, 0f, 0f) * initRotation;
         transform.Rotate(Vector3.up * mouseX);
         FpsController.SetControlRotation(Vector3.up * mouseX);
+        camera.rotation = Quaternion.Euler(0, mouseX, 0f) * transform.rotation;
+        camera.localRotation = camera.localRotation * Quaternion.Euler(xRotation, 0f, 0f);
     }
 }

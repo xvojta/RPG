@@ -320,6 +320,7 @@ public class FPSController : MonoBehaviour
 	private Vector3 GetMovementDirection()
 	{
 		Vector3 moveDir = _hasMovementInput ? _movementInput : _lastMovementInput;
+		moveDir = transform.rotation * moveDir;
 		if (moveDir.sqrMagnitude > 1f)
 		{
 			moveDir.Normalize();

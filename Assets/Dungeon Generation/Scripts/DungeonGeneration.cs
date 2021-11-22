@@ -46,11 +46,16 @@ public class DungeonGeneration : MonoBehaviour
     bool[][] map;
     Vector2 startPos;
 
-    public void GenerateDungeonTest()
+    public void Start()
+    {
+        testRun();
+    }
+
+    public void testRun()
     {
         foreach (Transform child in DungeonParentObject.transform) Destroy(child.gameObject);
         GenerateDungeon(NumberOfRooms, 3, 10);
-        minimapGeneration.Generate(map);
+        if (minimapGeneration != null) minimapGeneration.Generate(map);
     }
 
     void Init(int numberOfRooms, int minCorridor, int maxCorridor)

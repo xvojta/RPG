@@ -167,6 +167,8 @@ public class FPSControllerEssentials : RPGBCharacterControllerEssentials
         cachedPositionBeforeMotion = transform.position;
         cachedMotionDistance = motionDistance;
         motionTarget = transform.TransformDirection(motionDirection) * motionDistance;
+        motionTarget = transform.rotation * motionTarget;
+
         CombatManager.playerCombatNode.isMotionImmune = immune;
         motionActive = true;
     }
