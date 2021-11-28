@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4164787230675706379}
   - component: {fileID: 4077701493170258869}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: EntryPoint 1 (Main)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3118430864602425145}
   m_LocalRotation: {x: -1, y: -0, z: -0, w: 0}
-  m_LocalPosition: {x: -47.465233, y: 0.0007292815, z: 16.25}
+  m_LocalPosition: {x: -45.034, y: 0.0007292815, z: 16.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 914725131698428571}
@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsMain: 1
-  Position: {x: 0, y: 0, z: 0}
+  RotationOffset: 0
 --- !u!1 &4397249580578790531
 GameObject:
   m_ObjectHideFlags: 0
@@ -57,7 +57,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4168807343968439217}
   - component: {fileID: 4718509047700543485}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: EntryPoint 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsMain: 0
-  Position: {x: 0, y: 0, z: 0}
+  RotationOffset: 0
 --- !u!1 &4410322568975517777
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,12 +101,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 914725131698428571}
-  m_Layer: 0
+  - component: {fileID: 4603296814608499515}
+  m_Layer: 3
   m_Name: Enviroment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &914725131698428571
 Transform:
@@ -127,6 +128,36 @@ Transform:
   m_Father: {fileID: 4164787230675706379}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4603296814608499515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4410322568975517777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: f01b670dcfd737c45a376f0043a0c0df, type: 2}
+  m_BuildHeightMesh: 0
 --- !u!1 &4603296814786442785
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,7 +167,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4603296814786442784}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: CorridorEdge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,9 +196,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 914725131698428571}
     m_Modifications:
+    - target: {fileID: 1144963947156978, guid: 1256b84ead2f0bc45bc0aa6c00298e24, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1144963947156978, guid: 1256b84ead2f0bc45bc0aa6c00298e24, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 1359932293157902, guid: 1256b84ead2f0bc45bc0aa6c00298e24, type: 3}
       propertyPath: m_Name
       value: dfk_wall_01b_bevel_door
+      objectReference: {fileID: 0}
+    - target: {fileID: 1359932293157902, guid: 1256b84ead2f0bc45bc0aa6c00298e24, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1359932293157902, guid: 1256b84ead2f0bc45bc0aa6c00298e24, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4501534152841630, guid: 1256b84ead2f0bc45bc0aa6c00298e24, type: 3}
       propertyPath: m_RootOrder
@@ -239,6 +286,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: dfk_wall_01b
       objectReference: {fileID: 0}
+    - target: {fileID: 1788709455228086, guid: a90d2e4dce5384f4c9afa474ccf97099, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1788709455228086, guid: a90d2e4dce5384f4c9afa474ccf97099, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4088608855840970, guid: a90d2e4dce5384f4c9afa474ccf97099, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -300,6 +355,14 @@ PrefabInstance:
     - target: {fileID: 1788709455228086, guid: a90d2e4dce5384f4c9afa474ccf97099, type: 3}
       propertyPath: m_Name
       value: dfk_wall_01b
+      objectReference: {fileID: 0}
+    - target: {fileID: 1788709455228086, guid: a90d2e4dce5384f4c9afa474ccf97099, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1788709455228086, guid: a90d2e4dce5384f4c9afa474ccf97099, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4088608855840970, guid: a90d2e4dce5384f4c9afa474ccf97099, type: 3}
       propertyPath: m_RootOrder
@@ -363,6 +426,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: dfk_ceiling_stone
       objectReference: {fileID: 0}
+    - target: {fileID: 1728712264221278, guid: 9609acec4c2ac1147a786c610975d8fa, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1728712264221278, guid: 9609acec4c2ac1147a786c610975d8fa, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4340159827312338, guid: 9609acec4c2ac1147a786c610975d8fa, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -424,6 +495,14 @@ PrefabInstance:
     - target: {fileID: 1618768248407598, guid: 278e8eacf74c6154ebc173a666e00c27, type: 3}
       propertyPath: m_Name
       value: dfk_floor_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1618768248407598, guid: 278e8eacf74c6154ebc173a666e00c27, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1618768248407598, guid: 278e8eacf74c6154ebc173a666e00c27, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4432975863972712, guid: 278e8eacf74c6154ebc173a666e00c27, type: 3}
       propertyPath: m_RootOrder

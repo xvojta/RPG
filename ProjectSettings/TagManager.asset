@@ -16,8 +16,8 @@ TagManager:
   - Enviroment
   - Water
   - UI
-  - 
-  - 
+  - AlwaysOnTop
+  - Walkable
   - PostProcessing
   - Not in Reflection
   - 

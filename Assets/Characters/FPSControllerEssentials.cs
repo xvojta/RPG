@@ -354,6 +354,11 @@ public class FPSControllerEssentials : RPGBCharacterControllerEssentials
         controller.cameraCanRotate = state;
         Cursor.visible = !state;
         Cursor.lockState = state ? CursorLockMode.Locked : CursorLockMode.None;
+
+        if (state)
+            CrosshairDisplayManager.Instance.ShowCrosshair();
+        else
+            CrosshairDisplayManager.Instance.HideCrosshair();
     }
 
     public override void ToggleCameraMouseLook()
@@ -429,7 +434,7 @@ public class FPSControllerEssentials : RPGBCharacterControllerEssentials
         Destroy(GetComponent<CharacterAnimator>());
         Destroy(GetComponent<FPSControllerEssentials>());
         Destroy(GetComponent<RPGBCharacterWorldInteraction>());
-        Destroy(GetComponentInChildren<Camera>().gameObject);
+        Destroy(GetComponent<CameraRotateController>());
         Destroy(charController);
     }
 

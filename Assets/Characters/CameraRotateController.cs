@@ -7,17 +7,16 @@ public class CameraRotateController : MonoBehaviour
 {
     public float mouseSensitivity = 100f;
 
-    public float x;
-    public float y;
-    public Transform camera;
+    Transform camera;
+    public Transform head;
     public FPSController FpsController;
-    public Quaternion initRotation;
     float xRotation = 0f;
 
     public void Init()
     {
         FpsController = GetComponent<FPSController>();
-        initRotation = camera.rotation;
+        camera = Camera.main.transform;
+        camera.localRotation = Quaternion.Euler(90, 0, 90);
     }
 
     internal void UpdateRotation()
@@ -32,5 +31,10 @@ public class CameraRotateController : MonoBehaviour
         FpsController.SetControlRotation(Vector3.up * mouseX);
         camera.rotation = Quaternion.Euler(0, mouseX, 0f) * transform.rotation;
         camera.localRotation = camera.localRotation * Quaternion.Euler(xRotation, 0f, 0f);
+    }
+
+    private void Update()
+    {
+        camera.position = head.position;
     }
 }
