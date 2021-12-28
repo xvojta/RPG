@@ -7,7 +7,7 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
-	"last_search.83F126EB" = "p: a:assets runemarkStudio .mat"
+	"last_search.83F126EB" = "DarkFantasyKit/Meshes .fbx"
 	"InspectorPreview.83F126EB" = "1"
 	"currentGroup.83F126EB" = "asset"
 }
@@ -49,6 +49,9 @@ providers = {
 	}
 }
 recentSearches = [
+	"p:assets/Triforge Assets/medieval weapons/weapons prefab"
+	"p:assets/triforge assets/medieval weapons material"
+	"p:assets/triforge assets/medieval weapons/weapons .mat"
 	"p: a:assets runemarkStudio .mat"
 	"p: a:assets"
 	"p: a:assets "
