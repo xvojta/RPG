@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CorridorEnterPrefab: {fileID: 4603296814786442785, guid: 40c746ce4541e8d4797824ebae78f512, type: 3}
   CorridorMiddlePrefab: {fileID: 368300731853218828, guid: b52d00b02d541224a855b438456cf745, type: 3}
-  CorridorExitPrefab: {fileID: 2962320124177174077, guid: 97f3b50575b5f614aa3d85484664869a, type: 3}
+  CorridorExitPrefab: {fileID: 5738252265673088573, guid: 97f3b50575b5f614aa3d85484664869a, type: 3}
   SpawnProbability: 1
