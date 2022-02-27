@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 public class RoomReturn
@@ -93,6 +94,12 @@ public class DungeonGeneration : MonoBehaviour
         mainEntry.transform.rotation = lastRoom.GetComponentInChildren<EntryPoint>().transform.rotation;
         Destroy(lastRoom);
         #endregion
+
+        var surfaces = GameObject.FindObjectsOfType<NavMeshSurface>();
+        foreach(NavMeshSurface surface in surfaces)
+        {
+            surface.BuildNavMesh();
+        }
     }
 
     GameObject SpawnCorridor(Corridor corridor, int lenght, EntryPoint entryPoint, int rotation)

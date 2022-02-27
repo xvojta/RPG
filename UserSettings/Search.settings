@@ -7,7 +7,7 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
-	"last_search.83F126EB" = "DarkFantasyKit/Meshes .fbx"
+	"last_search.83F126EB" = "assets/runemarkStudio/darkfantasykit/meshes .fbx"
 	"InspectorPreview.83F126EB" = "1"
 	"currentGroup.83F126EB" = "asset"
 }
@@ -49,6 +49,8 @@ providers = {
 	}
 }
 recentSearches = [
+	"assets/runemarkStudio/darkfantasykit/meshes .fbx"
+	"DarkFantasyKit/Meshes .fbx"
 	"p:assets/Triforge Assets/medieval weapons/weapons prefab"
 	"p:assets/triforge assets/medieval weapons material"
 	"p:assets/triforge assets/medieval weapons/weapons .mat"

@@ -16,7 +16,7 @@ public class CameraRotateController : MonoBehaviour
     {
         FpsController = GetComponent<FPSController>();
         camera = Camera.main.transform;
-        camera.localRotation = Quaternion.Euler(90, 0, 90);
+        camera.transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
     }
 
     internal void UpdateRotation()
@@ -29,8 +29,7 @@ public class CameraRotateController : MonoBehaviour
 
         transform.Rotate(Vector3.up * mouseX);
         FpsController.SetControlRotation(Vector3.up * mouseX);
-        camera.rotation = Quaternion.Euler(0, mouseX, 0f) * transform.rotation;
-        camera.localRotation = camera.localRotation * Quaternion.Euler(xRotation, 0f, 0f);
+        camera.transform.rotation = Quaternion.Euler(xRotation, camera.rotation.eulerAngles.y + mouseX, camera.rotation.eulerAngles.z);
     }
 
     private void Update()
