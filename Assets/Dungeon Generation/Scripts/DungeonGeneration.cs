@@ -49,6 +49,14 @@ public class DungeonGeneration : MonoBehaviour
 
     public void Start()
     {
+        //DungeonData data = Resources.Load<DungeonData>("Generation/Seed");
+        int Seed = PlayerPrefs.GetInt(CharacterData.Instance.CharacterName + "Seed", 0);
+        if(Seed == 0)
+        {
+            Seed = Random.state.GetHashCode();
+            PlayerPrefs.SetInt(CharacterData.Instance.CharacterName + "Seed", Seed);
+        }
+        Random.InitState(Seed);
         testRun();
     }
 

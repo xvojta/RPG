@@ -245,7 +245,7 @@ MonoBehaviour:
   useRequirement: []
   nodeUseAnimation: Open
   nodeUseSound: {fileID: 0}
-  interactableUIOffsetY: 2
+  interactableUIOffsetY: 0.5
   interactableName: 
   visualEffects: []
   visualAnimations:
